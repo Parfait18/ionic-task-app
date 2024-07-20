@@ -1,4 +1,13 @@
-import { IonApp, IonContent, setupIonicReact } from "@ionic/react";
+import {
+  IonApp,
+  IonRouterOutlet,
+  IonSplitPane,
+  setupIonicReact,
+} from "@ionic/react";
+import { IonReactRouter } from "@ionic/react-router";
+import { Redirect, Route } from "react-router-dom";
+import Menu from "./components/Menu";
+import Page from "./pages/Page";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -29,31 +38,25 @@ import "@ionic/react/css/palettes/dark.system.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import "./components/FabButton";
-import FabButton from "./components/FabButton";
-import { IonHeader } from "@ionic/react";
-import TodoApp from "./components/TodoApp";
 
 setupIonicReact();
 
 const App: React.FC = () => {
   return (
-    <IonApp className="bg-slate-100">
-      {/* <IonHeader className="bg-slate-100 text-[primary]">
-        Welcome to task app
-      </IonHeader> */}
-      <IonContent
-        color="secondary"
-        className="grid grid-cols-1 justify-items-center h-min-screen"
-      >
-        <TodoApp task={[]}></TodoApp>
-        <FabButton
-          className="bottom-right-button"
-          onClick={function (): void {
-            console.log("sadasdfas");
-          }}
-        ></FabButton>
-      </IonContent>
+    <IonApp>
+      <IonReactRouter>
+        <IonSplitPane contentId="main">
+          <Menu />
+          <IonRouterOutlet id="main">
+            <Route path="/" exact={true}>
+              <Redirect to="/folder/Inbox" />
+            </Route>
+            <Route path="/folder/:name" exact={true}>
+              <Page />
+            </Route>
+          </IonRouterOutlet>
+        </IonSplitPane>
+      </IonReactRouter>
     </IonApp>
   );
 };
