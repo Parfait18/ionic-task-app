@@ -38,21 +38,20 @@ setupIonicReact();
 
 const App: React.FC = () => {
   return (
-    <IonApp className="bg-slate-100">
+    <IonApp>
       {/* <IonHeader className="bg-slate-100 text-[primary]">
         Welcome to task app
       </IonHeader> */}
-      <IonContent
-        color="secondary"
-        className="grid grid-cols-1 justify-items-center h-min-screen"
-      >
-        <TodoApp task={[]}></TodoApp>
-        <FabButton
+      <IonContent color="secondary" className="bg-transparent">
+        <div className="flex items-center h-screen justify-center  bg-slate-100">
+          <TodoApp task={[]}></TodoApp>
+          {/*  <FabButton
           className="bottom-right-button"
           onClick={function (): void {
             console.log("sadasdfas");
           }}
-        ></FabButton>
+        ></FabButton> */}
+        </div>
       </IonContent>
     </IonApp>
   );
