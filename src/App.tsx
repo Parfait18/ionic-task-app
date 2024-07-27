@@ -25,7 +25,7 @@ import "@ionic/react/css/display.css";
 
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
-import "@ionic/react/css/palettes/dark.system.css";
+// import "@ionic/react/css/palettes/dark.system.css";
 
 /* Theme variables */
 import "./theme/variables.css";
@@ -37,14 +37,25 @@ import TodoApp from "./components/TodoApp";
 setupIonicReact();
 
 const App: React.FC = () => {
+  const tasks = [
+    {
+      title: "Do something",
+      isChecked: false,
+      description: undefined,
+      id: "task-0",
+    },
+    {
+      id: "task-1",
+      title: "Do another thing",
+      isChecked: true,
+      description: undefined,
+    },
+  ];
   return (
     <IonApp>
-      {/* <IonHeader className="bg-slate-100 text-[primary]">
-        Welcome to task app
-      </IonHeader> */}
       <IonContent color="secondary" className="bg-transparent">
         <div className="flex items-center h-screen justify-center  bg-slate-100">
-          <TodoApp task={[]}></TodoApp>
+          <TodoApp tasks={tasks}></TodoApp>
           {/*  <FabButton
           className="bottom-right-button"
           onClick={function (): void {

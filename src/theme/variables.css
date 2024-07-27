@@ -117,10 +117,6 @@ input[type="checkbox"]:checked:after {
   box-shadow: none;
 } */
 
-* {
-  --background: white;
-}
-
 .vertical-center {
   margin: 0;
   position: relative;

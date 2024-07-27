@@ -14,38 +14,20 @@ import { useState } from "react";
 import { appsOutline, help, warning } from "ionicons/icons";
 import Checkbox from "./CheckBox";
 interface TaskItem {
-  id: string; // Added unique id field
+  id: string;
   title: string;
   isChecked: boolean;
   description: string | undefined;
 }
 interface TodoAppInterface {
-  task: TaskItem[];
+  tasks: TaskItem[];
 }
 
-const TodoApp: React.FC<TodoAppInterface> = () => {
+const TodoApp: React.FC<TodoAppInterface> = ({ tasks }) => {
   const [task, setTask] = useState("");
-  const [taskList, setTaskList] = useState<TaskItem[]>([
-    {
-      title: "Task 1",
-      isChecked: false,
-      description: undefined,
-      id: "task-1",
-    },
-    {
-      id: "task-2",
-      title: "Task 2",
-      isChecked: true,
-      description: undefined,
-    },
-    {
-      id: "task-3",
-      title: "Task 3",
-      isChecked: false,
-      description: undefined,
-    },
-  ]);
+  const [taskList, setTaskList] = useState<TaskItem[]>(tasks);
   const addTask = () => {
+    // check if task input content is not empty or contain space only
     if (task.split(" ").join("") != "") {
       console.log("[ task]", task);
 
@@ -55,23 +37,19 @@ const TodoApp: React.FC<TodoAppInterface> = () => {
         isChecked: false,
         description: undefined,
       };
-      console.log("[first newTask]", newTask);
       setTaskList([...taskList, newTask]);
       setTask("");
-
-      console.log("[taskList]", taskList);
     }
   };
 
-  const onDragEnd = (result: any) => {
-    console.log("drag  finish");
-    // if (!result.destination) return;
-    // const items = Array.from(taskList);
-    // const [reorderedItem] = items.splice(result.source.index, 1);
-    // items.splice(result.destination.index, 0, reorderedItem);
-    // setTaskList(items);
-  };
   const [isDisabled, setIsDisabled] = useState(true);
+  const removeTask = (id: string) => {
+    console.log("taskList", taskList);
+    setTaskList(taskList.filter((task) => task.id !== id));
+    console.log("after taskList", taskList);
+
+    console.log("remove is called", id);
+  };
 
   function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
     // The `from` and `to` properties contain the index of the item
@@ -87,15 +65,6 @@ const TodoApp: React.FC<TodoAppInterface> = () => {
 
     // Complete the reorder process
     event.detail.complete();
-
-    // Save the new order to the server (if needed)
-    // fetch('/tasks', {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ order: items.map(item => item.id) }),
-    // });
   }
 
   function toggleReorder() {
@@ -128,7 +97,7 @@ const TodoApp: React.FC<TodoAppInterface> = () => {
       </div>
       <TaskInput onClick={addTask} onChange={setTask} task={task} />
       {taskList.length == 0 && (
-        <div className=" bg-white gap-2 rounded border-gray-400 border-2 flex justify-center border-dotted h-60 ">
+        <div className=" bg-white gap-2 rounded border-gray-400 border-2 flex justify-center border-dotted h-60 m-2">
           <div className="flex self-center w-full justify-center">
             <button disabled>
               <IonIcon size="medium" icon={warning}></IonIcon>
@@ -155,10 +124,12 @@ const TodoApp: React.FC<TodoAppInterface> = () => {
                   </div>
                 </IonReorder>
                 <TaskItem
-                  key={"item-" + `${index}`}
+                  key={"task-" + `${index}`}
                   title={task.title}
+                  id={task.id}
                   isChecked={task.isChecked}
                   description={task.description}
+                  onDelete={removeTask}
                 />
               </div>
             ))}
