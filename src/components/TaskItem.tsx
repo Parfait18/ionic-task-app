@@ -2,12 +2,17 @@ import {
   IonAlert,
   IonAvatar,
   IonButton,
+  IonButtons,
   IonContent,
+  IonHeader,
   IonIcon,
   IonItem,
   IonItemOption,
   IonItemOptions,
   IonItemSliding,
+  IonModal,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
 import {
   arrowForward,
@@ -18,13 +23,16 @@ import {
   trash,
 } from "ionicons/icons";
 import Checkbox from "./CheckBox";
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
+import TaskInput from "./TaskInput";
+import { IonInput } from "@ionic/react";
 interface TaskItemProps {
   id: string;
   title: string;
   isChecked: boolean | false;
   description: string | undefined;
   onDelete: (id: string) => void;
+  onUpdate: (id: string, title: string) => void;
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({
@@ -32,14 +40,24 @@ const TaskItem: React.FC<TaskItemProps> = ({
   isChecked,
   id,
   onDelete,
+  onUpdate,
 }) => {
   const [checked, setCheked] = useState(isChecked);
   const [showAlert, setShowAlert] = useState(false);
-  const custumId = useId();
-
+  const [showModal, setShowModal] = useState(false);
+  const modal = useRef<HTMLIonModalElement>(null);
+  const [editTile, setEditTitle] = useState(title);
   const handleDelete = () => {
     setShowAlert(true);
   };
+
+  function onEditTitleChanged(value: string | number | null | undefined): void {
+    console.log("changed value", value);
+    // e.detail.value != null &&
+    //   e.detail.value != undefined &&
+    //   // e.detail.value.split(" ").join("") != "" &&
+    //   setEditTitle(e.detail.value);
+  }
 
   return (
     <div className="flex w-full gap-1 justify-between max-h-fit ">
@@ -72,18 +90,19 @@ const TaskItem: React.FC<TaskItemProps> = ({
           /> */}
         </IonItem>
         <IonItemOptions slot="end" className="bg-slate-200 shadow">
-          <IonItemOption className="bg-slate-200">
+          <IonItemOption className="bg-slate-200" id="open-modal">
             <IonIcon
+              onClick={() => {
+                setShowModal(true);
+              }}
+              id="open-modal"
               slot="icon-only"
               size="small"
               color="success"
               icon={pencil}
             ></IonIcon>
           </IonItemOption>
-          <IonItemOption
-            className="bg-slate-200"
-            onClick={() => setShowAlert(true)}
-          >
+          <IonItemOption className="bg-slate-200">
             <IonIcon
               onClick={() => setShowAlert(true)}
               slot="icon-only"
@@ -110,6 +129,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
                 console.log("Alert canceled");
                 setShowAlert(false);
               },
+              cssClass: "alert-cancel",
             },
             {
               text: "OK",
@@ -119,6 +139,54 @@ const TaskItem: React.FC<TaskItemProps> = ({
           ]}
           onDidDismiss={() => setShowAlert(false)}
         ></IonAlert>
+      )}
+
+      {showModal && (
+        <IonModal
+          id="edit-modal"
+          isOpen={showModal}
+          ref={modal}
+          trigger="open-modal"
+          initialBreakpoint={1}
+          breakpoints={[0, 1]}
+          onDidDismiss={() => setShowModal(false)}
+        >
+          <IonHeader className="mt-2">
+            <IonToolbar>
+              <IonButtons slot="start">
+                <IonButton onClick={() => modal.current?.dismiss()}>
+                  Close
+                </IonButton>
+              </IonButtons>
+              <IonTitle className="text-gray-600"> Edit Task</IonTitle>
+              <IonButtons slot="end">
+                <IonButton
+                  onClick={() => {
+                    onUpdate(id, editTile);
+                    modal.current?.dismiss();
+                  }}
+                >
+                  Ok
+                </IonButton>
+              </IonButtons>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="bg-slate-50 flex justify-center items-center p-2 w-auto">
+            <div className="p-2">
+              <IonInput
+                type="text"
+                value={editTile}
+                onIonInput={(e) =>
+                  e.detail.value != null &&
+                  e.detail.value != undefined &&
+                  e.detail.value.split(" ").join("") != "" &&
+                  setEditTitle(e.detail.value)
+                }
+                className=" bg-white border-b border-b-gray-500 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+          </IonContent>
+        </IonModal>
       )}
     </div>
   );

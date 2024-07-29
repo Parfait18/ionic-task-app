@@ -46,11 +46,16 @@ const TodoApp: React.FC<TodoAppInterface> = ({ tasks }) => {
   const removeTask = (id: string) => {
     console.log("taskList", taskList);
     setTaskList(taskList.filter((task) => task.id !== id));
-    console.log("after taskList", taskList);
-
-    console.log("remove is called", id);
   };
 
+  const updateTask = (id: string, newTitle: string) => {
+    console.log("update is called", id, newTitle);
+    const updatedTask = taskList.map((task) =>
+      task.id === id ? { ...task, title: newTitle } : task
+    );
+    setTaskList(updatedTask);
+    console.log("updatedTask", updatedTask);
+  };
   function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
     // The `from` and `to` properties contain the index of the item
     // when the drag started and ended, respectively
@@ -130,6 +135,7 @@ const TodoApp: React.FC<TodoAppInterface> = ({ tasks }) => {
                   isChecked={task.isChecked}
                   description={task.description}
                   onDelete={removeTask}
+                  onUpdate={updateTask}
                 />
               </div>
             ))}

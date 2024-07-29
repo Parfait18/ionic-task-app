@@ -124,3 +124,9 @@ input[type="checkbox"]:checked:after {
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
+.alert-cancel {
+  color: rgb(255, 4, 4) !important;
+}
+#edit-modal {
+  --height: 50%;
+}
