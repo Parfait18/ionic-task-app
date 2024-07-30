@@ -17,7 +17,7 @@ interface TaskItem {
   id: string;
   title: string;
   isChecked: boolean;
-  description: string | undefined;
+  description?: string | undefined;
 }
 interface TodoAppInterface {
   tasks: TaskItem[];
@@ -28,9 +28,9 @@ const TodoApp: React.FC<TodoAppInterface> = ({ tasks }) => {
   const [taskList, setTaskList] = useState<TaskItem[]>(tasks);
   const addTask = () => {
     // check if task input content is not empty or contain space only
+    console.log("called");
     if (task.split(" ").join("") != "") {
       console.log("[ task]", task);
-
       const newTask: TaskItem = {
         id: `task-${taskList.length}-${Date.now()}`, // Generate a unique id
         title: task,
@@ -42,7 +42,7 @@ const TodoApp: React.FC<TodoAppInterface> = ({ tasks }) => {
     }
   };
 
-  const [isDisabled, setIsDisabled] = useState(true);
+  // const [isDisabled, setIsDisabled] = useState(true);
   const removeTask = (id: string) => {
     console.log("taskList", taskList);
     setTaskList(taskList.filter((task) => task.id !== id));
@@ -72,12 +72,12 @@ const TodoApp: React.FC<TodoAppInterface> = ({ tasks }) => {
     event.detail.complete();
   }
 
-  function toggleReorder() {
-    setIsDisabled((current) => !current);
-  }
+  // function toggleReorder() {
+  //   setIsDisabled((current) => !current);
+  // }
 
   return (
-    <div className=" bg-white gap-4 max-h-fit min-h-96 shadow w-96 border border-gray-200 rounded-md py-4 px-4">
+    <div className=" bg-white gap-4 max-h-fit min-h-96 shadow w-96 border border-gray-200 rounded-md py-2 px-4">
       <div className="p-2">
         <h4 className="text-gray-800 font-bold my-1">
           Welcome to task manage app !

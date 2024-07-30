@@ -31,13 +31,13 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./components/FabButton";
 import FabButton from "./components/FabButton";
-import { IonHeader } from "@ionic/react";
 import TodoApp from "./components/TodoApp";
+import { useState } from "react";
 
 setupIonicReact();
 
 const App: React.FC = () => {
-  const tasks = [
+  const data = [
     {
       title: "Do something",
       isChecked: false,
@@ -51,17 +51,23 @@ const App: React.FC = () => {
       description: undefined,
     },
   ];
+  const [tasks, setTasks] = useState(data);
+
+  const refreshTask = () => {
+    setTasks([]);
+    console.log("tasks", tasks);
+  };
+
   return (
     <IonApp>
       <IonContent color="secondary" className="bg-transparent">
         <div className="flex items-center h-screen justify-center  bg-slate-100">
-          <TodoApp tasks={tasks}></TodoApp>
-          {/*  <FabButton
-          className="bottom-right-button"
-          onClick={function (): void {
-            console.log("sadasdfas");
-          }}
-        ></FabButton> */}
+          <TodoApp key={tasks.length} tasks={tasks}></TodoApp>
+          <FabButton
+            className="bottom-right-button"
+            onClick={function (): void {}}
+            onRefresh={refreshTask}
+          ></FabButton>
         </div>
       </IonContent>
     </IonApp>
