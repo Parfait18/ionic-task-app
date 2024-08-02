@@ -28,9 +28,7 @@ const TodoApp: React.FC<TodoAppInterface> = ({ tasks }) => {
   const [taskList, setTaskList] = useState<TaskItem[]>(tasks);
   const addTask = () => {
     // check if task input content is not empty or contain space only
-    console.log("called");
     if (task.split(" ").join("") != "") {
-      console.log("[ task]", task);
       const newTask: TaskItem = {
         id: `task-${taskList.length}-${Date.now()}`, // Generate a unique id
         title: task,
@@ -44,17 +42,14 @@ const TodoApp: React.FC<TodoAppInterface> = ({ tasks }) => {
 
   // const [isDisabled, setIsDisabled] = useState(true);
   const removeTask = (id: string) => {
-    console.log("taskList", taskList);
     setTaskList(taskList.filter((task) => task.id !== id));
   };
 
   const updateTask = (id: string, newTitle: string) => {
-    console.log("update is called", id, newTitle);
     const updatedTask = taskList.map((task) =>
       task.id === id ? { ...task, title: newTitle } : task
     );
     setTaskList(updatedTask);
-    console.log("updatedTask", updatedTask);
   };
   function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
     // The `from` and `to` properties contain the index of the item

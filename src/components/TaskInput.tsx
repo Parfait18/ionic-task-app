@@ -13,9 +13,9 @@ const TaskInput: React.FC<TaskInputProps> = ({ onClick, onChange, task }) => {
     preventDefault: () => void;
   }) => {
     if (event.key === "Enter") {
-      // event.preventDefault(); // Prevent the default action (e.g., form submission)
-      console.log("adadasd");
-      return onclick;
+      if (onClick) {
+        onClick(event as any); // Cast to any to satisfy the type checker
+      }
     }
   };
   return (
@@ -39,5 +39,4 @@ const TaskInput: React.FC<TaskInputProps> = ({ onClick, onChange, task }) => {
   );
 };
 
-<style></style>;
 export default TaskInput;

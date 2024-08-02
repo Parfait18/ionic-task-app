@@ -55,7 +55,6 @@ const App: React.FC = () => {
 
   const refreshTask = () => {
     setTasks([]);
-    console.log("tasks", tasks);
   };
 
   return (

@@ -52,7 +52,6 @@ const TaskItem: React.FC<TaskItemProps> = ({
   };
 
   function onEditTitleChanged(value: string | number | null | undefined): void {
-    console.log("changed value", value);
     // e.detail.value != null &&
     //   e.detail.value != undefined &&
     //   // e.detail.value.split(" ").join("") != "" &&
